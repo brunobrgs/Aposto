@@ -1,0 +1,27 @@
+<%= simple_form_for @challenge, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.error_notification(:message => errors(@challenge)) %>
+  <%= f.input :question, :input_html => { :class => "span12" } %>
+  <%= f.input :private %>
+  <%= f.input :bet_value, :wrapper => :prepend do %>
+    <%= content_tag :span, "R$", :class => "add-on" %>
+    <%= f.input_field :bet_value, :value => number_to_currency(@challenge.bet_value), :class => 'input-mini money' %>
+  <% end %>
+  <%= f.input :max_bets, :input_html => { :class => "input-mini" } %>
+  <%= f.input :end_date, :input_html => { :class => "input-small" } %>
+
+  <div id='options'>
+    <%= f.simple_fields_for :options, 
+      @challenge.options.blank? ? @challenge.options.build : @challenge.options do |option| %>
+      <%= render 'option_fields', :f => option %>
+    <% end %>
+  </div>
+  <div style='margin-left: 20%'>
+    <%= link_to_add_association '  Resposta', f, :options, :class => 'icon-plus' %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")), challenges_path, :class => 'btn' %>
+  </div>
+<% end %>
+<%= render 'layouts/mask' %>

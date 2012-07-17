@@ -1,0 +1,38 @@
+<%= link_to "Eu aposto!", root_path, :class => 'brand' %>
+
+<ul class="nav pull-left">
+  <li class=''><%= link_to 'Principal', root_path %></li>
+  <li><%= link_to 'Desafios', challenges_path %></li>
+</ul>
+
+<ul class="nav pull-right">
+  <form class="navbar-form pull-left">
+    <input type="text" class="search-query span2" placeholder="Busca">
+  </form>
+  <li class="divider-vertical"></li>
+  <% if user_signed_in? %>
+    <li>
+    <%= link_to 'Sair', destroy_user_session_path, :method=>'delete' %>        
+    </li>
+  <% else %>
+    <li>
+    <%= link_to 'Entrar', new_user_session_path %>  
+    </li>
+  <% end %>
+  <% if user_signed_in? %>
+    <li>
+    <%= link_to 'Editar conta', edit_user_registration_path %>
+    </li>
+    <% if current_user.has_role? :admin %>
+      <li>
+      <%= link_to 'Admin', users_path %>
+      </li>
+    <% end %>
+  <% else %>
+    <li>
+    <%= link_to 'Cadastrar', new_user_registration_path %>
+    </li>
+  <% end %>
+  <div>
+  </div>
+</ul>
