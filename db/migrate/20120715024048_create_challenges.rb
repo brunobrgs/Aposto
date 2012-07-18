@@ -8,7 +8,7 @@ class CreateChallenges < ActiveRecord::Migration
       t.integer :max_bets, :null => false
       t.date :start_date
       t.date :end_date, :null => false
-      t.integer :correct_option
+      t.integer :correct_option_id
       t.timestamps
     end
   end

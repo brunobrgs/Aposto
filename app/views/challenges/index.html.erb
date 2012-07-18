@@ -2,10 +2,10 @@
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
 </div>
+
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:question) %></th>
       <th><%= model_class.human_attribute_name(:bet_value) %></th>
       <th><%= model_class.human_attribute_name(:max_bets) %></th>
@@ -16,27 +16,21 @@
   <tbody>
     <% @challenges.each do |challenge| %>
       <tr>
-        <td><%= link_to challenge.id, challenge_path(challenge) %></td>
         <td><%= challenge.question %></td>
         <td><%= number_to_currency(challenge.bet_value) %></td>
         <td><%= challenge.max_bets %></td>
         <td><%= (l challenge.end_date) %></td>
         <td>
-          <% if challenge.belong_to current_user %>
-            <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                        edit_challenge_path(challenge), :class => 'btn btn-mini' %>
-            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                        challenge_path(challenge),
-                        :method => :delete,
-                        :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
-                        :class => 'btn btn-mini btn-danger' %>
-          <% end %>
+          <%= link_to t('.show', :default => t("helpers.links.show")),
+                        challenge_path(challenge), :class => 'btn btn-mini' %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
+<%= will_paginate(@challenges) %>
+
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_challenge_path,
-            :class => 'btn btn-primary' %>
+            :class => 'btn btn-primary' if current_user %>

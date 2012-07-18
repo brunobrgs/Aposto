@@ -39,8 +39,8 @@
               <div class="span3">
                 <div class="well sidebar-nav">
                   <% if current_user %>
-                    Seu saldo: R$ <%= current_user.credit %> <br />
-                    Apostas criadas: 0 <br />
+                    Seu saldo: <%= number_to_currency current_user.credit %> <br />
+                    Apostas criadas: <%= current_user.challenges.size %> <br />
                     Participações: 0 <br />
                   <% else %>
                     Bem vindo!

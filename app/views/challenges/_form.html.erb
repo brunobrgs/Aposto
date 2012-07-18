@@ -8,6 +8,7 @@
   <% end %>
   <%= f.input :max_bets, :input_html => { :class => "input-mini" } %>
   <%= f.input :end_date, :input_html => { :class => "input-small" } %>
+  <%= f.association :correct_option, :collection => @challenge.answers_with_id unless @challenge.answers_with_id.blank? %>
 
   <div id='options'>
     <%= f.simple_fields_for :options, 

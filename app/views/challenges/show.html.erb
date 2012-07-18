@@ -1,31 +1,68 @@
 <%- model_class = @challenge.class -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human %></h1>
+  <h1><%= t '.title', :default => model_class.model_name.human %></h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:question) %>:</strong></dt>
-  <dd><%= @challenge.question %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:bet_value) %>:</strong></dt>
-  <dd><%= @challenge.bet_value %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:max_bets) %>:</strong></dt>
-  <dd><%= @challenge.max_bets %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:start_date) %>:</strong></dt>
-  <dd><%= @challenge.start_date ? @challenge.start_date : '-' %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:end_date) %>:</strong></dt>
-  <dd><%= @challenge.end_date %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:correct_option) %>:</strong></dt>
-  <dd><%= @challenge.correct_option ? @challenge.correct_option : '-' %></dd>
-</dl>
+<div class='row'>
+  <div class='span6' style='padding-left: 5%;'>
+    <dl class="dl-horizontal">
+      <dt><strong><%= model_class.human_attribute_name(:question) %>:</strong></dt>
+      <dd><%= @challenge.question %></dd>
+      <dt><strong><%= model_class.human_attribute_name(:bet_value) %>:</strong></dt>
+      <dd><%= number_to_currency @challenge.bet_value %></dd>
+      <dt><strong><%= model_class.human_attribute_name(:max_bets) %>:</strong></dt>
+      <dd><%= @challenge.max_bets %></dd>
+      <dt><strong><%= model_class.human_attribute_name(:start_date) %>:</strong></dt>
+      <dd><%= @challenge.start_date ? (l @challenge.start_date) : '-' %></dd>
+      <dt><strong><%= model_class.human_attribute_name(:end_date) %>:</strong></dt>
+      <dd><%= (l @challenge.end_date) %></dd>
+      <% if @challenge.belong_to current_user %>
+          <dt><strong><%= model_class.human_attribute_name(:correct_option) %>:</strong></dt>
+          <dd><%= @challenge.correct_option ? @challenge.correct_option.answer : '-' %></dd>
+      <% end %>
+    </dl>
+  </div>
+  <div class='span6'>
+    <table class="table table-striped table-condensed">
+      <thead>
+      <tr>
+        <th colspan="2">Possíveis Respostas</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= simple_form_for @challenge, :html => {:class => 'form-horizontal'} do |f| %>
+          <% @challenge.answers_with_id.each do |opt| %>
+              <tr>
+                <td>
+                  <%=
+                      f.collection_radio_buttons(
+                              :options, [opt], :last, :first
+                      ) do |b|
+                        b.label { b.radio_button +
+                                ("<span style='padding-left: 5px;'>" + b.text + "</span>").html_safe }
+                      end
+                  %>
+                </td>
+              </tr>
+          <% end %>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
 
 <div class="form-actions">
   <%= link_to t('.back', :default => t("helpers.links.back")),
-              challenges_path, :class => 'btn'  %>
-  <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_challenge_path(@challenge), :class => 'btn' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              challenge_path(@challenge),
-              :method => 'delete',
-              :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
-              :class => 'btn btn-danger' %>
+              challenges_path, :class => 'btn' %>
+  <% if @challenge.belong_to current_user %>
+      <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                  edit_challenge_path(@challenge), :class => 'btn' %>
+      <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                  challenge_path(@challenge),
+                  :method => 'delete',
+                  :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
+                  :class => 'btn btn-danger' %>
+  <% end %>
+  <%= link_to t('.vote', :default => t("helpers.links.vote")),
+              challenges_path, :class => 'btn btn-success' if @challenge.can_be_voted? %>
 </div>

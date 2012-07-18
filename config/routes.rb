@@ -1,4 +1,9 @@
 Rails3BootstrapDeviseCancan::Application.routes.draw do
+
+  localized do
+    resources :challenges
+  end
+
   resources :challenges
 
   authenticated :user do

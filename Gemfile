@@ -2,7 +2,14 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.6'
 gem 'mysql2'
 gem 'simple_form', :git => 'git://github.com/plataformatec/simple_form.git'
-gem 'cocoon'
+gem 'cocoon'	   # Nested attributes
+gem 'friendly_id'
+gem 'i18n_routing' # Translate routes
+gem 'thin'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
+gem 'responders'
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'

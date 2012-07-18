@@ -2,6 +2,9 @@
 # pt-BR translations for Ruby on Rails
 pt_BR:
 
+  resources:
+    challenges: 'desafios'
+
   helpers:
     select:
       prompt: "Por favor selecione"
@@ -18,6 +21,8 @@ pt_BR:
       cancel: 'Cancelar'
       back: 'Voltar'
       confirm: 'Tem certeza?'
+      show: 'Mostrar'
+      vote: 'Votar'
 
     titles:
       new: 'Novo %{model}'
@@ -36,7 +41,7 @@ pt_BR:
       challenge:
         question: 'Pergunta'
         private: 'Privado'
-        bet_value: 'Valor da aposta'
+        bet_value: 'Valor'
         max_bets: 'Máximo de apostas'
         end_date: 'Data finalização'
         start_date: 'Data de início'
@@ -55,6 +60,16 @@ pt_BR:
 
       full_messages:
         format: "%{attribute} %{message}"
+
+  flash:
+    actions:
+      create:
+        notice: "%{resource_name} foi criado com sucesso."
+      update:
+        notice: "%{resource_name} foi atualizado com sucesso."
+      destroy:
+        notice: "%{resource_name} foi deletado com sucesso."
+        alert: "%{resource_name} não foi deletado."
 
   # formatos de data e hora
   date:

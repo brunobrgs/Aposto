@@ -11,10 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120716225559) do
+ActiveRecord::Schema.define(:version => 20120717215213) do
 
   create_table "challenges", :force => true do |t|
     t.integer  "user_id",                                                         :null => false
+    t.string   "slug"
     t.string   "question",                                                        :null => false
     t.boolean  "private",                                      :default => false
     t.decimal  "bet_value",      :precision => 8, :scale => 2,                    :null => false
@@ -25,6 +26,8 @@ ActiveRecord::Schema.define(:version => 20120716225559) do
     t.datetime "created_at",                                                      :null => false
     t.datetime "updated_at",                                                      :null => false
   end
+
+  add_index "challenges", ["slug"], :name => "index_challenges_on_slug", :unique => true
 
   create_table "options", :force => true do |t|
     t.integer  "challenge_id", :null => false
