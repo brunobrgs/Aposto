@@ -1,18 +1,45 @@
-<div class="span hero-unit">
-	O valor recebido ao ganhar um desafio será: <br>
-	Valor apostado + (Valor total das apostas erradas / Total de acertos) <br>
-
-	<br>
-	<div class="span4">
-	  <h2>Challenges</h2>
-	   <p>
-	   	question:string private:boolean bet_value:decimal min_bets:integer max_bets:integer start_time:datetime end_time:datetime correct_option:integer
-	   </p>
-	</div>
-	<div class="span4">
-	  <h2>Options</h2>
-	   <p>
-	   	challenge:references answer:string
-	   </p>
-	</div>
+<%- model_class = Challenge.new.class -%>
+<div class="page-header">
+  <h1>Escolha e Participe</h1>
 </div>
+
+<% unless @challenges.blank? %>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Situação</th>
+        <th><%= model_class.human_attribute_name(:question) %></th>
+        <th><%= model_class.human_attribute_name(:bet_value) %></th>
+        <th><%= model_class.human_attribute_name(:max_bets) %></th>
+        <th><%= model_class.human_attribute_name(:end_date) %></th>
+        <th><%= t '.actions', :default => t("helpers.actions") %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @challenges.each do |challenge| %>
+          <tr>
+            <td><%= challenge.situation(current_user) %></td>
+            <td><%= challenge.question %></td>
+            <td><%= number_to_currency(challenge.bet_value) %></td>
+            <td><%= challenge.max_bets %></td>
+            <td><%= (l challenge.end_date) %></td>
+            <td>
+              <%= link_to t('.show', :default => t("helpers.links.show")),
+                          challenge_path(challenge), :class => 'btn btn-mini' %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <%= will_paginate(@challenges) %>
+
+<% else %>
+    <div class="alert alert-info">
+      Nenhum desafio foi encontrado.
+    </div>
+<% end %>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_challenge_path,
+            :class => 'btn btn-primary' if current_user %>

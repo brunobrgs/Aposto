@@ -56,7 +56,7 @@ pt_BR:
 
       messages:
         taken: "já está em uso"
-        record_invalid: "A validação falhou: %{errors}"
+        record_invalid: "%{errors}"
 
       full_messages:
         format: "%{attribute} %{message}"

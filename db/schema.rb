@@ -11,20 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120717215213) do
+ActiveRecord::Schema.define(:version => 20120718230636) do
 
   create_table "challenges", :force => true do |t|
-    t.integer  "user_id",                                                         :null => false
+    t.integer  "user_id",                                                            :null => false
     t.string   "slug"
-    t.string   "question",                                                        :null => false
-    t.boolean  "private",                                      :default => false
-    t.decimal  "bet_value",      :precision => 8, :scale => 2,                    :null => false
-    t.integer  "max_bets",                                                        :null => false
+    t.string   "question",                                                           :null => false
+    t.boolean  "private",                                         :default => false
+    t.decimal  "bet_value",         :precision => 8, :scale => 2,                    :null => false
+    t.integer  "max_bets",                                                           :null => false
     t.date     "start_date"
-    t.date     "end_date",                                                        :null => false
-    t.integer  "correct_option"
-    t.datetime "created_at",                                                      :null => false
-    t.datetime "updated_at",                                                      :null => false
+    t.date     "end_date",                                                           :null => false
+    t.integer  "correct_option_id"
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
   end
 
   add_index "challenges", ["slug"], :name => "index_challenges_on_slug", :unique => true
@@ -48,6 +48,16 @@ ActiveRecord::Schema.define(:version => 20120717215213) do
 
   add_index "roles", ["name", "resource_type", "resource_id"], :name => "index_roles_on_name_and_resource_type_and_resource_id"
   add_index "roles", ["name"], :name => "index_roles_on_name"
+
+  create_table "user_votes", :force => true do |t|
+    t.integer  "user_id",    :null => false
+    t.integer  "option_id",  :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "user_votes", ["option_id"], :name => "index_user_votes_on_option_id"
+  add_index "user_votes", ["user_id"], :name => "index_user_votes_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                                :default => "",  :null => false

@@ -1,35 +1,41 @@
 <%- model_class = Challenge.new.class -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize %></h1>
+  <h1>Meus Desafios</h1>
 </div>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th><%= model_class.human_attribute_name(:question) %></th>
-      <th><%= model_class.human_attribute_name(:bet_value) %></th>
-      <th><%= model_class.human_attribute_name(:max_bets) %></th>
-      <th><%= model_class.human_attribute_name(:end_date) %></th>
-      <th><%=t '.actions', :default => t("helpers.actions") %></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @challenges.each do |challenge| %>
+<% unless @challenges.blank? %>
+    <table class="table">
+      <thead>
       <tr>
-        <td><%= challenge.question %></td>
-        <td><%= number_to_currency(challenge.bet_value) %></td>
-        <td><%= challenge.max_bets %></td>
-        <td><%= (l challenge.end_date) %></td>
-        <td>
-          <%= link_to t('.show', :default => t("helpers.links.show")),
-                        challenge_path(challenge), :class => 'btn btn-mini' %>
-        </td>
+        <th> Situação </th>
+        <th><%= model_class.human_attribute_name(:question) %></th>
+        <th><%= model_class.human_attribute_name(:bet_value) %></th>
+        <th><%= model_class.human_attribute_name(:max_bets) %></th>
+        <th><%= model_class.human_attribute_name(:end_date) %></th>
+        <th><%= t '.actions', :default => t("helpers.actions") %></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+      </thead>
+      <tbody>
+      <% @challenges.each do |challenge| %>
+          <tr>
+            <td><%= challenge.situation(current_user) %></td>
+            <td><%= challenge.question %></td>
+            <td><%= number_to_currency(challenge.bet_value) %></td>
+            <td><%= challenge.max_bets %></td>
+            <td><%= (l challenge.end_date) %></td>
+            <td>
+              <%= link_to t('.show', :default => t("helpers.links.show")),
+                          challenge_path(challenge), :class => 'btn btn-mini' %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
 
-<%= will_paginate(@challenges) %>
+    <%= will_paginate(@challenges) %>
+
+<% else %>
+<% end %>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_challenge_path,

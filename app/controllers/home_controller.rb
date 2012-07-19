@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
   def index
-    @users = User.all
+    @challenges = Challenge.availables(params[:page])
   end
 end

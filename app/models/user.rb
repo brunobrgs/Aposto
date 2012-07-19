@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
 
   has_many :challenges
+  has_many :user_votes
 
   def self.current
     Thread.current[:user]
@@ -18,5 +19,24 @@ class User < ActiveRecord::Base
   def self.current=(user)
     Thread.current[:user] = user
   end
-  
+
+  # List of challenges that the user is participating
+  def challenges_in
+    Challenge.includes({:options => :user_votes}).where("user_votes.user_id = #{self.id}")
+  end
+
+  # Created challenges + Paticipating challenges
+  def my_challenges
+    (self.challenges+self.challenges_in).flatten.uniq
+  end
+
+  def voted_for?(option_id)
+    self.user_votes.where(:option_id => option_id).blank? ? false : true
+  end
+
+  def can_vote_in?(challenge)
+    # If the user voted at the challenge, he can't vote again
+    challenge.options.each {|opt| return false if self.voted_for?(opt.id) }
+  end
+
 end

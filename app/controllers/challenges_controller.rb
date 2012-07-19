@@ -1,10 +1,11 @@
+# encoding: utf-8
 class ChallengesController < ApplicationController
 
   before_filter :set_current_user
   before_filter :find_challenge, :only => [:edit, :update, :destroy]
 
   def index
-    @challenges = Challenge.publics(params[:page])
+    @challenges = current_user.my_challenges.paginate(:page => params[:page])
   end
 
   def show
@@ -31,8 +32,22 @@ class ChallengesController < ApplicationController
   end
 
   def destroy
-    @challenge.destroy
+    flash[:error] = errors(@challenge) unless @challenge.destroy
     respond_with(@challenge)
+  end
+
+  def vote
+    if params[:option]
+      option = Option.find(params[:option][:id])
+      if option.vote(current_user)
+        flash[:notice] = "Voto confirmado!"
+      else
+        flash[:error] = errors(option)
+      end
+    else
+      flash[:error] = "Selecione a opção para realizar o voto."
+    end
+    redirect_to :action => :show, :id => params[:id]
   end
 
   private

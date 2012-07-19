@@ -78,3 +78,4 @@ module Rails3BootstrapDeviseCancan
 end
 
 WillPaginate.per_page = 10
+require 'will_paginate/array'

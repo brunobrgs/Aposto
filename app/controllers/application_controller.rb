@@ -13,4 +13,10 @@ class ApplicationController < ActionController::Base
   def set_current_user
   	User.current = current_user
   end
+
+  # Treatment of error messages
+  def errors(object)
+    object.errors.full_messages.join("<br />").html_safe
+  end
+
 end
