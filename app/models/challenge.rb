@@ -4,7 +4,8 @@ class Challenge < ActiveRecord::Base
   extend FriendlyId
   friendly_id :question, use: :slugged
 
-  attr_accessible :bet_value, :correct_option_id, :end_date, :max_bets, :private, :question, :options_attributes
+  attr_accessible :bet_value, :correct_option_id, :end_date, :max_bets, :private, :question,
+                  :options_attributes
 
   belongs_to :user
   has_many :options, :dependent => :destroy
