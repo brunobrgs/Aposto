@@ -30,8 +30,12 @@ class Challenge < ActiveRecord::Base
     !self.start_date.blank?
   end
 
+  def max_bets_reached?
+    self.votes.size == self.max_bets
+  end
+
   def can_be_voted?
-    (self.initiated? || self.belong_to(User.current)) && self.votes.size < self.max_bets
+    (self.initiated? || self.belong_to(User.current)) && !self.max_bets_reached?
   end
 
   def situation(user)
@@ -45,7 +49,7 @@ class Challenge < ActiveRecord::Base
   end
 
   def can_be_changed?
-    !self.belong_to(User.current) || self.initiated?
+    self.belong_to(User.current) && (!self.initiated? || self.defining_correct_option?)
   end
 
   def can_be_destroyed?
@@ -57,7 +61,7 @@ class Challenge < ActiveRecord::Base
   end
 
   def defining_correct_option?
-    self.changes && self.changes.size == 1 && self.changes['correct_option_id']
+    self.changed? && self.changes.size == 1 && self.changes.has_key?('correct_option_id')
   end
 
   validate :can_change?, :on => :update
