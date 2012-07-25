@@ -50,13 +50,13 @@ ActiveRecord::Schema.define(:version => 20120725000212) do
   add_index "roles", ["name"], :name => "index_roles_on_name"
 
   create_table "transactions", :force => true do |t|
-    t.integer  "user_id",                                                  :null => false
-    t.decimal  "value",                     :precision => 10, :scale => 0, :null => false
-    t.string   "ident",        :limit => 2,                                :null => false
+    t.integer  "user_id",                                                 :null => false
+    t.decimal  "value",                     :precision => 8, :scale => 2, :null => false
+    t.string   "ident",        :limit => 2,                               :null => false
     t.integer  "related_id"
     t.string   "related_type"
-    t.datetime "created_at",                                               :null => false
-    t.datetime "updated_at",                                               :null => false
+    t.datetime "created_at",                                              :null => false
+    t.datetime "updated_at",                                              :null => false
   end
 
   add_index "transactions", ["ident"], :name => "index_transactions_on_ident"

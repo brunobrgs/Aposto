@@ -6,8 +6,9 @@ class Vote
     @option = option
     ActiveRecord::Base.transaction do
       verify_bet_value
-      Credit.subtract(@user, @option.bet_value, :vote)
-      create_user_vote
+      user_vote = create_user_vote
+      c = Credit.new(@user, @option.bet_value, :vote, user_vote)
+      c.subtract
     end
   end
 
@@ -22,6 +23,7 @@ class Vote
     uv.user = @user
     uv.option = @option
     uv.save!
+    uv
   end
 
 end
