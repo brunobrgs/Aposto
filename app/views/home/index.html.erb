@@ -10,7 +10,7 @@
         <th>Situação</th>
         <th><%= model_class.human_attribute_name(:question) %></th>
         <th><%= model_class.human_attribute_name(:bet_value) %></th>
-        <th><%= model_class.human_attribute_name(:max_bets) %></th>
+        <th>Participantes</th>
         <th><%= model_class.human_attribute_name(:end_date) %></th>
         <th><%= t '.actions', :default => t("helpers.actions") %></th>
       </tr>
@@ -21,11 +21,11 @@
             <td><%= challenge.situation(current_user) %></td>
             <td><%= challenge.question %></td>
             <td><%= number_to_currency(challenge.bet_value) %></td>
-            <td><%= challenge.max_bets %></td>
+            <td><%= "#{challenge.votes.size}/#{challenge.max_bets}" %></td>
             <td><%= (l challenge.end_date) %></td>
             <td>
               <%= link_to t('.show', :default => t("helpers.links.show")),
-                          challenge_path(challenge), :class => 'btn btn-mini' %>
+                          challenge_path(challenge, :h => request.fullpath), :class => 'btn btn-mini' %>
             </td>
           </tr>
       <% end %>

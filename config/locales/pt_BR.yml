@@ -42,8 +42,8 @@ pt_BR:
         question: 'Pergunta'
         private: 'Privado'
         bet_value: 'Valor'
-        max_bets: 'Máximo de apostas'
-        end_date: 'Data finalização'
+        max_bets: 'Máximo de participantes'
+        end_date: 'Votações até'
         start_date: 'Data de início'
         correct_option: 'Opção correta'
 

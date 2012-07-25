@@ -5,7 +5,11 @@ class ChallengesController < ApplicationController
   before_filter :find_challenge, :only => [:edit, :update, :destroy]
 
   def index
-    @challenges = current_user.my_challenges.paginate(:page => params[:page])
+    if current_user
+      @challenges = current_user.my_challenges.paginate(:page => params[:page])
+    else
+      redirect_to root_path
+    end
   end
 
   def show

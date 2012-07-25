@@ -1,0 +1,33 @@
+<div class="page-header">
+  <h1>Movimentações de crédito</h1>
+</div>
+
+<% unless @transactions.blank? %>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Data</th>
+        <th>Valor</th>
+        <th>Identificação</th>
+        <th>Relacionado</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @transactions.each do |t| %>
+          <tr>
+            <td><%= l t.created_at %></td>
+            <td style="color: <%= t.value > 0 ? '#008000' : '#ff0000' %>"><%= number_to_currency(t.value.abs) %></td>
+            <td><%= t.description %></td>
+            <td><%= t.related_desc %></td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <%= will_paginate(@transactions) %>
+
+<% else %>
+    <div class="alert alert-info">
+      Nenhuma movimentação encontrado.
+    </div>
+<% end %>

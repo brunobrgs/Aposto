@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
 
   has_many :challenges
   has_many :user_votes
+  has_many :transactions
 
   def self.current
     Thread.current[:user]
@@ -30,13 +31,19 @@ class User < ActiveRecord::Base
     (self.challenges+self.challenges_in).flatten.uniq
   end
 
+  # Alredy voted at option ?
   def voted_for?(option_id)
     self.user_votes.where(:option_id => option_id).blank? ? false : true
   end
 
+  # If the user voted at the challenge, he can't vote again
   def can_vote_in?(challenge)
-    # If the user voted at the challenge, he can't vote again
     challenge.options.each {|opt| return false if self.voted_for?(opt.id) }
+  end
+
+  # Have more or the same value passed ?
+  def have_credit?(value)
+    self.credit >= value
   end
 
 end

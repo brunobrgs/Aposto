@@ -4,6 +4,7 @@ Rails3BootstrapDeviseCancan::Application.routes.draw do
     resources :challenges
   end
 
+  match '/extrato', :to => 'home#transactions'
   match '/vote', :to => 'challenges#vote'
 
   authenticated :user do

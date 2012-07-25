@@ -37,12 +37,11 @@
                 <td>
                   <%=
                       f.collection_radio_buttons(
-                              :id, [opt], :last, :first, {}, {:checked => current_user.voted_for?(opt[1])}
+                              :id, [opt], :last, :first, {}, {:checked => current_user && current_user.voted_for?(opt[1])}
                       ) do |b|
                         b.label { b.radio_button +
                                 ("<span style='padding-left: 5px;'>" + b.text + "</span>").html_safe }
-                      end
-                  %>
+                      end %>
                 </td>
               </tr>
           <% end %>
@@ -56,7 +55,7 @@
 
 <div class="form-actions">
   <%= link_to t('.back', :default => t("helpers.links.back")),
-              challenges_path, :class => 'btn' %>
+              params[:h] ? url_for(request.referrer) : challenges_path, :class => 'btn' %>
   <% if @challenge.belong_to current_user %>
       <%= link_to t('.edit', :default => t("helpers.links.edit")),
                   edit_challenge_path(@challenge), :class => 'btn' %>

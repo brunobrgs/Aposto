@@ -35,7 +35,7 @@ class Challenge < ActiveRecord::Base
   end
 
   def can_be_voted?
-    (self.initiated? || self.belong_to(User.current)) && !self.max_bets_reached?
+    User.current && (self.initiated? || self.belong_to(User.current)) && !self.max_bets_reached?
   end
 
   def situation(user)
